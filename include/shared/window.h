@@ -10,7 +10,7 @@
 
 #define ASSERT_WINDOW(window) (assert(window))
 
-struct s_window {
+struct window {
   int width;
   int height;
   char *title;
@@ -22,13 +22,13 @@ struct s_window {
 bool window_init();
 bool window_terminate();
 
-struct s_window *window_create();
-struct s_window *window_free(struct s_window *window);
+struct window *window_create();
+struct window *window_destroy(struct window *window);
 
-bool window_open(struct s_window *window);
+bool window_open(struct window *window);
 
-bool window_should_close(struct s_window *window);
-void window_pre_tick(struct s_window *window);
-void window_post_tick(struct s_window *window);
+bool window_should_close(struct window *window);
+void window_pre_tick(struct window *window);
+void window_post_tick(struct window *window);
 
 #endif

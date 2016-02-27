@@ -8,8 +8,8 @@
 // CREATE/DESTROY
 ////////////////////////////////////////////////
 
-struct s_program *program_create() {
-  struct s_program *program = MALLOC(sizeof(struct s_program));
+struct program *program_create() {
+  struct program *program = MALLOC(sizeof(struct program));
 
   program->argc = 0;
   program->argv = NULL;
@@ -24,7 +24,7 @@ struct s_program *program_create() {
   return program;
 }
 
-struct s_program *program_destroy(struct s_program *program) {
+struct program *program_destroy(struct program *program) {
   ASSERT_PROGRAM(program);
 
   while(program->extra_number) {
@@ -37,7 +37,7 @@ struct s_program *program_destroy(struct s_program *program) {
   return FREE(program);
 }
 
-void program_exit(struct s_program *program, int status) {
+void program_exit(struct program *program, int status) {
   program_destroy(program);
   exit(status);
 }
@@ -46,7 +46,7 @@ void program_exit(struct s_program *program, int status) {
 // HELP
 ////////////////////////////////////////////////
 
-void program_print_help(struct s_program *program) {
+void program_print_help(struct program *program) {
   ASSERT_PROGRAM(program);
   
   printf("Usage: %s [OPTIONS]\n", program->argv[0]);
@@ -58,7 +58,7 @@ void program_print_help(struct s_program *program) {
 // ARGUMENTS
 ////////////////////////////////////////////////
 
-void program_set_args(struct s_program *program, int argc, char *argv[]) {
+void program_set_args(struct program *program, int argc, char *argv[]) {
   ASSERT_PROGRAM(program);
 
   program->argc = argc;
@@ -67,7 +67,7 @@ void program_set_args(struct s_program *program, int argc, char *argv[]) {
 
 ////////////////////////////////////////////////
 
-void program_parse_args(struct s_program *program) {
+void program_parse_args(struct program *program) {
   ASSERT_PROGRAM(program);
 
   if(program->extra) {
@@ -121,7 +121,7 @@ void program_parse_args(struct s_program *program) {
 
 ////////////////////////////////////////////////
 
-bool program_parse_short_arg(struct s_program *program, char arg, char *value) {
+bool program_parse_short_arg(struct program *program, char arg, char *value) {
   ASSERT_PROGRAM(program);
 
   switch(arg) {
@@ -136,7 +136,7 @@ bool program_parse_short_arg(struct s_program *program, char arg, char *value) {
   return false;
 }
 
-bool program_parse_short_args(struct s_program *program, char *args, char *value) {
+bool program_parse_short_args(struct program *program, char *args, char *value) {
   ASSERT_PROGRAM(program);
 
   int i=0;
@@ -154,7 +154,7 @@ bool program_parse_short_args(struct s_program *program, char *args, char *value
 
 ////////////////////////////////////////////////
 
-bool program_parse_long_arg(struct s_program *program, char *arg, char *value) {
+bool program_parse_long_arg(struct program *program, char *arg, char *value) {
   ASSERT_PROGRAM(program);
 
   int arg_len = strlen(arg);
@@ -170,13 +170,13 @@ bool program_parse_long_arg(struct s_program *program, char *arg, char *value) {
 
 ////////////////////////////////////////////////
 
-void program_short_arg_invalid(struct s_program *program, char arg) {
+void program_short_arg_invalid(struct program *program, char arg) {
   ASSERT_PROGRAM(program);
   
   util_log(LOG_WARNING, "'%c' is not a valid argument", arg);
 }
   
-void program_long_arg_invalid(struct s_program *program, char *arg) {
+void program_long_arg_invalid(struct program *program, char *arg) {
   ASSERT_PROGRAM(program);
   
   util_log(LOG_WARNING, "'%s' is not a valid argument", arg);
@@ -186,7 +186,7 @@ void program_long_arg_invalid(struct s_program *program, char *arg) {
 // WINDOW
 ////////////////////////////////////////////////
 
-void program_open_window(struct s_program *program) {
+void program_open_window(struct program *program) {
   ASSERT_PROGRAM(program);
 
   assert(!program->window);

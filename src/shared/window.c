@@ -15,8 +15,8 @@ bool window_terminate() {
 
 ////////////////////////////////////////////////
 
-struct s_window *window_create() {
-  struct s_window *window = MALLOC(sizeof(struct s_window));
+struct window *window_create() {
+  struct window *window = MALLOC(sizeof(struct window));
 
   window->width = 640;
   window->height = 480;
@@ -28,7 +28,7 @@ struct s_window *window_create() {
   return window;
 }
 
-struct s_window *window_free(struct s_window *window) {
+struct window *window_destroy(struct window *window) {
   ASSERT_WINDOW(window);
 
   return FREE(window);
@@ -36,7 +36,7 @@ struct s_window *window_free(struct s_window *window) {
 
 ////////////////////////////////////////////////
 
-bool window_open(struct s_window *window) {
+bool window_open(struct window *window) {
   ASSERT_WINDOW(window);
 
   assert(!window->open);
@@ -54,7 +54,7 @@ bool window_open(struct s_window *window) {
 
 ////////////////////////////////////////////////
 
-bool window_should_close(struct s_window *window) {
+bool window_should_close(struct window *window) {
   ASSERT_WINDOW(window);
 
   assert(window->open);
@@ -64,11 +64,11 @@ bool window_should_close(struct s_window *window) {
 
 ////////////////////////////////////////////////
 
-void window_pre_tick(struct s_window *window) {
+void window_pre_tick(struct window *window) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void window_post_tick(struct s_window *window) {
+void window_post_tick(struct window *window) {
   glfwSwapBuffers(window->window);
   glfwPollEvents();
 }

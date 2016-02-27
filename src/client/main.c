@@ -3,7 +3,7 @@
 #include "program.h"
 #include "window.h"
 
-void main_loop(struct s_program *program) {
+void main_loop(struct program *program) {
   while(!window_should_close(program->window)) {
     window_pre_tick(program->window);
     
@@ -13,7 +13,7 @@ void main_loop(struct s_program *program) {
 }
 
 int main(int argc, char *argv[]) {
-  struct s_program *program = program_create();
+  struct program *program = program_create();
   
   program_set_args(program, argc, argv);
   program_parse_args(program);

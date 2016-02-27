@@ -6,8 +6,8 @@
 
 ////////////////////////////////////////////////
 
-struct s_object *object_create() {
-  struct s_object *object = MALLOC(sizeof(struct s_object));
+struct object *object_create() {
+  struct object *object = MALLOC(sizeof(struct object));
 
   mat4x4_identity(object->local_matrix);
   mat4x4_identity(object->world_matrix);
@@ -18,7 +18,7 @@ struct s_object *object_create() {
   return object;
 }
 
-struct s_object *object_free(struct s_object *object) {
+struct object *object_destroy(struct object *object) {
   ASSERT_OBJECT(object);
 
   return FREE(object);

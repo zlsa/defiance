@@ -5,5 +5,3 @@ include_directories(../../include/client/)
 
 add_executable(defiance-client main.c ../shared/program.c ../shared/util.c)
 
-target_link_libraries(defiance-client ../shared/program.c)
-

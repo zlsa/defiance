@@ -1,7 +1,7 @@
 
 #include "util.h"
 
-static void* util_malloc(size_t n, unsigned long line) {
+void* util_malloc(size_t n, unsigned long line) {
   void* p = malloc(n);
   
   if(!p) {

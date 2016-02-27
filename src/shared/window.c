@@ -6,7 +6,7 @@
 
 bool window_init() {
   glewExperimental = GL_TRUE;
-  return glfwInit() && glewInit();
+  return glfwInit();
 }
 
 bool window_terminate() {
@@ -45,6 +45,7 @@ bool window_open(struct window *window) {
 
   if(window->window) {
     glfwMakeContextCurrent(window->window);
+    glewInit();
     window->open = true;
     glClearColor(0.0, 0.0, 0.5, 1.0);
   }

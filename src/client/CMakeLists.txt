@@ -13,6 +13,8 @@ include_directories(../../include/client/)
 
 add_executable(defiance-client
   main.c
+  ../shared/mesh.c
+  ../shared/shader.c
   ../shared/object.c
   ../shared/window.c
   ../shared/program.c

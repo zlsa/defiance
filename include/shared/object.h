@@ -15,10 +15,17 @@ struct object {
   vec4 position;
   quat rotation;
 
-  struct mesh mesh;
+  struct object *parent;
+  
+  int children_length;
+  struct object **children;
+
+  struct mesh *mesh;
 };
 
 struct object *object_create();
 struct object *object_destroy(struct object *object);
+
+void object_set_mesh(struct object *object, struct mesh *mesh);
 
 #endif

@@ -22,6 +22,8 @@ struct s_program {
 struct s_program *program_create();
 struct s_program *program_free(struct s_program *program);
 
+void program_print_help(struct s_program *program);
+
 void program_set_args(struct s_program *program, int argc, char *argv[]);
 
 void program_parse_args(struct s_program *program);

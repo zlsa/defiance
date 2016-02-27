@@ -4,6 +4,10 @@
 
 #include <string.h>
 
+////////////////////////////////////////////////
+// CREATE/DESTROY
+////////////////////////////////////////////////
+
 struct s_program *program_create() {
   struct s_program *program = MALLOC(sizeof(struct s_program));
 
@@ -14,26 +18,40 @@ struct s_program *program_create() {
   program->extra = NULL;
   program->extra_number = 0;
 
+  program->glfw_initialized = false;
+  program->window = NULL;
+
   return program;
 }
 
-struct s_program *program_free(struct s_program *program) {
+struct s_program *program_destroy(struct s_program *program) {
   ASSERT_PROGRAM(program);
 
   while(program->extra_number) {
     program->extra[program->extra_number--] = FREE(program->extra[program->extra_number--]);
   }
 
+  if(program->glfw_initialized)
+    window_terminate();
+
   return FREE(program);
 }
 
+////////////////////////////////////////////////
+// HELP
+////////////////////////////////////////////////
+
 void program_print_help(struct s_program *program) {
+  ASSERT_PROGRAM(program);
+  
   printf("Usage: %s [OPTIONS]\n", program->argv[0]);
   printf("Options:\n");
   printf(" -h --help              Display this help\n");
 }
 
-// ARGS
+////////////////////////////////////////////////
+// ARGUMENTS
+////////////////////////////////////////////////
 
 void program_set_args(struct s_program *program, int argc, char *argv[]) {
   ASSERT_PROGRAM(program);
@@ -41,6 +59,8 @@ void program_set_args(struct s_program *program, int argc, char *argv[]) {
   program->argc = argc;
   program->argv = argv;
 }
+
+////////////////////////////////////////////////
 
 void program_parse_args(struct s_program *program) {
   ASSERT_PROGRAM(program);
@@ -94,12 +114,17 @@ void program_parse_args(struct s_program *program) {
 
 }
 
+////////////////////////////////////////////////
+
 bool program_parse_short_arg(struct s_program *program, char arg, char *value) {
   ASSERT_PROGRAM(program);
 
   switch(arg) {
   case 'h':
     program->help = true;
+    break;
+  default:
+    program_short_arg_invalid(program, arg);
     break;
   }
 
@@ -122,6 +147,8 @@ bool program_parse_short_args(struct s_program *program, char *args, char *value
   
 }
 
+////////////////////////////////////////////////
+
 bool program_parse_long_arg(struct s_program *program, char *arg, char *value) {
   ASSERT_PROGRAM(program);
 
@@ -129,7 +156,49 @@ bool program_parse_long_arg(struct s_program *program, char *arg, char *value) {
 
   if(strncmp(arg, "help", arg_len) == 0) {
     program->help = true;
+  } else {
+    program_long_arg_invalid(program, arg);
   }
 
   return false;
 }
+
+////////////////////////////////////////////////
+
+void program_short_arg_invalid(struct s_program *program, char arg) {
+  ASSERT_PROGRAM(program);
+  
+  util_log(LOG_WARNING, "'%c' is not a valid argument", arg);
+}
+  
+void program_long_arg_invalid(struct s_program *program, char *arg) {
+  ASSERT_PROGRAM(program);
+  
+  util_log(LOG_WARNING, "'%s' is not a valid argument", arg);
+}
+  
+////////////////////////////////////////////////
+// WINDOW
+////////////////////////////////////////////////
+
+void program_open_window(struct s_program *program) {
+  ASSERT_PROGRAM(program);
+
+  assert(!program->window);
+
+  if(!window_init()) {
+    util_log(LOG_ERROR, "could not initialize GLFW");
+    program_destroy(program);
+  }
+
+  program->glfw_initialized = true;
+  
+  program->window = window_create();
+
+  if(!window_open(program->window)) {
+    util_log(LOG_ERROR, "could not open GLFW window");
+    program_destroy(program);
+  }
+
+}
+  

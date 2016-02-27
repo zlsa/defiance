@@ -22,11 +22,12 @@ int util_log(int level, const char *format, ...) {
     break;
   case LOG_ERROR:
     stream = stderr;
-    fputs(KRED "! " RESET, stream);
+    fputs(KRED "! ", stream);
     break;
   }
   vfprintf(stream, format, args);
-  fputs(RESET, stream);
+  
+  fputs("\n" RESET, stream);
 
   va_end(args);
 }

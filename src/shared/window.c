@@ -46,7 +46,7 @@ bool window_open(struct s_window *window) {
   if(window->window) {
     glfwMakeContextCurrent(window->window);
     window->open = true;
-    glClearColor(0.0, 1.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.5, 1.0);
   }
 
   return window->window;

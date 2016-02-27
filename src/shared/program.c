@@ -37,6 +37,11 @@ struct s_program *program_destroy(struct s_program *program) {
   return FREE(program);
 }
 
+void program_exit(struct s_program *program, int status) {
+  program_destroy(program);
+  exit(status);
+}
+
 ////////////////////////////////////////////////
 // HELP
 ////////////////////////////////////////////////
@@ -188,7 +193,7 @@ void program_open_window(struct s_program *program) {
 
   if(!window_init()) {
     util_log(LOG_ERROR, "could not initialize GLFW");
-    program_destroy(program);
+    program_exit(program, EXIT_FAILURE);
   }
 
   program->glfw_initialized = true;
@@ -197,7 +202,7 @@ void program_open_window(struct s_program *program) {
 
   if(!window_open(program->window)) {
     util_log(LOG_ERROR, "could not open GLFW window");
-    program_destroy(program);
+    program_exit(program, EXIT_FAILURE);
   }
 
 }

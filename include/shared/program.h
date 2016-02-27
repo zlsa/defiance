@@ -25,6 +25,7 @@ struct s_program {
 
 struct s_program *program_create();
 struct s_program *program_destroy(struct s_program *program);
+void program_exit(struct s_program *program, int status);
 
 void program_print_help(struct s_program *program);
 
